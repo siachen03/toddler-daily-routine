@@ -1,186 +1,353 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#d1fae5">
-<title>一周小日历 · Routine Explorer</title>
-<style>
-:root{--ink:#18231f;--green:#a7f3d0;--paper:#f4f6f2}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible,summary:focus-visible{outline:3px solid #2563eb;outline-offset:4px}button:active{transform:translate(2px,2px);box-shadow:none!important}header{border-bottom:4px solid var(--ink);background:#fff;padding:24px 28px;display:flex;justify-content:space-between;gap:20px;align-items:center}.brand{display:flex;align-items:center;gap:16px}.logo{font-size:30px;border:3px solid var(--ink);border-radius:18px;background:var(--green);padding:10px;box-shadow:3px 3px var(--ink)}h1{font-size:26px;margin:0 0 5px;font-weight:900;letter-spacing:-1px}.eyebrow{font-size:11px;letter-spacing:2px;font-weight:900}p{margin:0}.subtitle{font-size:12px;color:#66736d}.tools{display:flex;gap:14px;align-items:center}.step-wrap{display:flex;flex-direction:column;gap:8px}.tool-label{font-size:11px;font-weight:700;color:#66736d}.steps{display:flex;gap:8px}.unit-btn{width:40px;height:40px;font-size:19px;font-weight:900;border:3px solid var(--ink);border-radius:11px;box-shadow:2px 3px var(--ink);position:relative}.unit-btn[aria-pressed=true]{outline:3px solid var(--ink);outline-offset:4px;transform:translateY(-2px)}#step-1{background:#ef4444;color:#fff}#step-3{background:#facc15}#step-5{background:#2563eb;color:#fff}#step-7{background:linear-gradient(180deg,#ef4444 0 14.28%,#fb923c 14.28% 28.56%,#fde047 28.56% 42.84%,#4ade80 42.84% 57.12%,#38bdf8 57.12% 71.4%,#6366f1 71.4% 85.68%,#c084fc 85.68%);color:#fff;text-shadow:1px 1px 2px #000,-1px -1px 2px #000}#step-10{background:#fff;border-color:#ef4444;color:#ef4444}.reset{background:#ffe4e6;border:3px solid var(--ink);border-radius:12px;box-shadow:3px 3px var(--ink);padding:10px 12px;font-weight:800;font-size:12px}.page{max-width:1800px;margin:auto;padding:26px 24px 48px}.intro{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.intro h2{font-size:20px;margin:0 0 6px;font-weight:900}.intro p{font-size:12px;color:#66736d;line-height:1.6}.badge{border:2px solid var(--ink);border-radius:9px;font-size:11px;font-weight:800;padding:7px 10px;background:#fff;white-space:nowrap}.legend{display:flex;gap:14px;font-size:11px;font-weight:700;flex-wrap:wrap;margin-bottom:20px}.dot{display:inline-block;width:10px;height:10px;border:1.5px solid var(--ink);border-radius:3px;margin-right:5px}.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;align-items:start}.day{min-width:0}.day-header{width:100%;border:3px solid var(--ink);border-radius:16px;background:#d1fae5;padding:13px 8px;text-align:center;box-shadow:3px 4px var(--ink);margin-bottom:18px}.day.weekend .day-header{background:#fecdd3}.day.today .day-header{background:#18231f;color:#fff}.day-name{display:block;font-size:16px;font-weight:900}.day-en{font-size:10px;font-weight:800;letter-spacing:1.4px}.today-label{font-size:9px;margin-left:4px}.event-list{display:flex;flex-direction:column;gap:12px}.event{background:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:3px 4px var(--ink);overflow:hidden}.event.school{background:#d1fae5}.event.course{background:#fef08a}.event.dance{background:#fbcfe8}.event.done{opacity:.55}.event.done .event-title{text-decoration:line-through}.event.current{outline:3px solid #10b981;outline-offset:3px}.event-open{border:0;background:transparent;text-align:left;width:100%;padding:13px 11px 9px;display:block}.event-icon{font-size:24px;display:block;margin-bottom:10px}.event-time{display:block;font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.3px}.event-title{font-size:13px;font-weight:850;line-height:1.5;display:block;margin-top:6px}.event-en{display:block;font-size:9px;line-height:1.4;color:#63746b;margin-top:3px}.event-bottom{display:flex;align-items:center;justify-content:space-between;padding:0 10px 10px;gap:4px}.detail-hint{font-size:9px;font-weight:700;color:#56675e}.check{border:2px solid var(--ink);border-radius:7px;width:25px;height:25px;padding:0;background:#fff;font-weight:900}.check[aria-pressed=true]{background:var(--ink);color:#fff}.mobile-days{display:none}.footer-note{text-align:center;color:#6b786f;font-size:11px;margin-top:30px;line-height:1.8}dialog{width:min(480px,calc(100% - 28px));max-height:88dvh;border:4px solid var(--ink);border-radius:26px;padding:0;box-shadow:7px 8px var(--ink);color:var(--ink)}dialog::backdrop{background:#18231f80;backdrop-filter:blur(3px)}.dialog-head{padding:20px 22px;border-bottom:3px solid var(--ink);background:#d1fae5;display:flex;justify-content:space-between;gap:10px;align-items:start}.dialog-head h2{margin:5px 0;font-size:23px}.close{width:32px;height:32px;background:white;border:2px solid var(--ink);border-radius:10px;font-size:20px;flex-shrink:0}.dialog-body{padding:20px 22px}.adjuster{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 20px}.adjuster strong{font-size:22px;font-variant-numeric:tabular-nums}.round{border:2.5px solid var(--ink);border-radius:50%;width:38px;height:38px;background:#fff;box-shadow:2px 2px var(--ink);font-weight:900;font-size:20px}.dialog-note{font-size:11px;color:#65746b;margin-bottom:18px;line-height:1.7}.phrase{border:2px dashed var(--ink);border-radius:15px;padding:13px;background:#f0fdf4;margin-top:10px;font-size:14px;line-height:1.6}.speak{border:2px solid var(--ink);border-radius:8px;background:#fff;padding:3px 9px;margin-bottom:7px}.school-detail{padding-top:16px}.school-detail h3{font-size:14px;margin:0 0 10px}.school-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #dce4dd;font-size:12px}.school-row time{font-weight:900;white-space:nowrap}.full-btn{width:100%;border:3px solid var(--ink);border-radius:12px;padding:11px;background:#a7f3d0;box-shadow:3px 3px var(--ink);font-weight:850;margin-top:20px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:12px;padding:12px 18px;font-size:12px;z-index:10;max-width:90%;text-align:center}.reset-body{padding:24px}.reset-body h2{margin:0 0 12px;font-size:22px}.reset-body p{font-size:14px;line-height:1.8}.reset-actions{display:flex;gap:15px;margin-top:20px}.reset-actions button{flex:1;border:2px solid var(--ink);border-radius:10px;padding:10px;background:#fff;font-weight:800}.reset-actions button:last-child{background:#fecdd3}
-.course-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 22px}.course-strip button{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:2px solid var(--ink);border-radius:12px;padding:12px 14px;background:#fef08a;text-align:left;box-shadow:2px 3px var(--ink);font-size:12px}.course-strip button.pink{background:#fbcfe8}.course-strip span{font-weight:800;margin-left:auto;font-variant-numeric:tabular-nums}@media(max-width:760px){.course-strip{grid-template-columns:1fr;gap:9px}.course-strip button{padding:10px 12px}}
-@media(min-width:1500px){.event-time{font-size:14px}.event-title{font-size:15px}.event-open{padding:16px}.event-icon{font-size:30px}.event-en{font-size:11px}}
-@media(max-width:1000px){header{padding:20px}.brand{gap:10px}h1{font-size:22px}.logo{display:none}.page{padding:22px 16px}.week{gap:8px}.event-open{padding:10px 7px}.event-time{font-size:10px}.event-title{font-size:12px}.event-bottom{padding:0 6px 8px}.detail-hint{font-size:8px}.unit-btn{width:36px;height:36px}}
-@media(max-width:760px){header{padding:18px 18px;align-items:start;flex-wrap:wrap;gap:20px}.brand{width:100%;justify-content:space-between}.brand .eyebrow{font-size:9px}h1{font-size:24px}.tools{width:100%;justify-content:space-between}.steps{gap:10px}.unit-btn{width:39px;height:39px}.reset{font-size:11px;padding:10px}.intro{align-items:start}.intro h2{font-size:18px}.badge{font-size:10px}.page{padding:22px 18px}.mobile-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;position:sticky;top:0;background:var(--paper);padding:10px 0;z-index:3}.mobile-days button{padding:10px 0;border:2px solid var(--ink);border-radius:11px;background:#fff;font-weight:900;font-size:12px;box-shadow:1px 2px var(--ink)}.mobile-days button[aria-pressed=true]{background:#a7f3d0;transform:translateY(-3px);box-shadow:2px 4px var(--ink)}.week{display:block}.day{display:none}.day.selected{display:block}.day-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px}.event{border-radius:22px}.event-list{gap:15px}.event-open{display:grid;grid-template-columns:50px 1fr;grid-template-rows:auto auto auto;column-gap:12px;padding:16px 18px 6px}.event-icon{grid-row:1/4;align-self:center;font-size:32px;margin:0}.event-time{font-size:17px}.event-title{font-size:16px;margin-top:4px}.event-en{font-size:11px}.event-bottom{padding:0 18px 13px 80px}.check{width:30px;height:30px}.detail-hint{font-size:10px}.event.current{outline-offset:2px}.legend{gap:12px}.dialog-head h2{font-size:21px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-</style>
-</head>
-<body>
-<header><div class="brand"><div class="logo" aria-hidden="true">🗓️</div><div><p class="eyebrow">ROUTINE EXPLORER</p><h1>一周小日历</h1><p class="subtitle">上学、探索，也给快乐留一点时间。</p></div></div><div class="tools"><div class="step-wrap"><span class="tool-label">每次调整 <b id="step-label">1</b> 分钟</span><div class="steps" aria-label="调整时间的分钟数"><button class="unit-btn" id="step-1" data-step="1" aria-pressed="true">1</button><button class="unit-btn" id="step-3" data-step="3" aria-pressed="false">3</button><button class="unit-btn" id="step-5" data-step="5" aria-pressed="false">5</button><button class="unit-btn" id="step-7" data-step="7" aria-pressed="false">7</button><button class="unit-btn" id="step-10" data-step="10" aria-pressed="false">10</button></div></div><button class="reset" id="reset">↺ 恢复默认</button></div></header>
-<main class="page"><div class="intro"><div><h2>小小的一周，大大的精彩 ✨</h2><p>每周重复的七天作息 · 点击卡片查看详情、调整时间</p></div><span class="badge">7 DAYS / WEEK</span></div><div class="course-strip" aria-label="本周课程"><button data-open="d1_class">📚 <b>周二英语</b><span>19:00–20:00</span></button><button data-open="d5_class" class="pink">🩰 <b>周六舞蹈</b><span>16:50–18:00</span></button><button data-open="d6_class">📚 <b>周日英语</b><span>17:00–18:00</span></button></div><div class="legend"><span><i class="dot" style="background:#fff"></i>日常作息</span><span><i class="dot" style="background:#d1fae5"></i>幼儿园</span><span><i class="dot" style="background:#fef08a"></i>英语课</span><span><i class="dot" style="background:#fbcfe8"></i>舞蹈课</span></div><nav class="mobile-days" id="day-tabs" aria-label="选择星期"></nav><div class="week" id="calendar"></div><p class="footer-note">一个星期，七种小期待。🌱<br>时间调整保存在当前浏览器；完成勾选每周重新开始。</p></main>
-<dialog id="event-dialog" aria-labelledby="event-heading"><div id="event-content"></div></dialog>
-<dialog id="reset-dialog" aria-labelledby="reset-heading"><div class="reset-body"><h2 id="reset-heading">恢复这一周的默认作息？</h2><p>将还原七天的时间，并清空本周勾选。</p><div class="reset-actions"><button id="cancel-reset">先不改</button><button id="confirm-reset">恢复默认</button></div></div></dialog>
-<div id="toast" role="status" hidden class="toast"></div>
-<script>
-        const INITIAL_WEEKDAY = [
-            { id: 'wd_0700', time: '07:00', title: 'Wake Up & Breakfast', emoji: '🌅 🍞' },
-            { id: 'wd_0800', time: '08:00', title: 'Go to School', emoji: '🎒' },
-            { id: 'wd_0900', time: '09:00', title: 'Reading Time', emoji: '📚 🍌' },
-            { id: 'wd_1000', time: '10:00', title: 'Drawing Time', emoji: '🎨' },
-            { id: 'wd_1100', time: '11:00', title: 'Lunch Time', emoji: '🍱' },
-            { id: 'wd_1200', time: '12:00', title: 'Nap Time', emoji: '😴' },
-            { id: 'wd_1300', time: '13:00', title: 'Nap Time', emoji: '💤' },
-            { id: 'wd_1400', time: '14:00', title: 'Play Time', emoji: '⛹️‍♀️' },
-            { id: 'wd_1500', time: '15:00', title: 'Tea Time', emoji: '🍰' },
-            { id: 'wd_1600', time: '16:00', title: 'Play Time', emoji: '🚽' },
-            { id: 'wd_1630', time: '16:30', title: 'School Out & Play', emoji: '🎒 🚴🏻' },
-            { id: 'wd_1700', time: '17:00', title: 'Play Time', emoji: '🛝' },
-            { id: 'wd_1730', time: '17:30', title: 'Going Home', emoji: '🏡' },
-            { id: 'wd_1800', time: '18:00', title: 'Yummy Dinner', emoji: '🍲' },
-            { id: 'wd_1900', time: '19:00', title: 'Bath & Wash Up', emoji: '🛀' },
-            { id: 'wd_2000', time: '20:00', title: 'Fun with Mommy', emoji: '🧸 💃🏻' },
-            { id: 'wd_2100', time: '21:00', title: 'Nighty Night', emoji: '🌙' }
-        ];
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fdf1f5"><title>4岁半的生活打卡日历</title><meta name="description" content="4岁半的生活打卡日历：中英文切换、一天打卡、一周课程总览。"><link rel="canonical" href="https://siachen03.github.io/toddler-daily-routine/"><meta property="og:title" content="4岁半的生活打卡日历"><meta property="og:image" content="https://siachen03.github.io/toddler-daily-routine/preview.jpg"><style>
+*{box-sizing:border-box}body{margin:0;background:#f5f5f3;color:#242824;font:14px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #777;outline-offset:4px}button:active{transform:translate(1px,1px);box-shadow:none}header{background:white;border-bottom:2px solid #333;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:22px;font-weight:900}.header-tools{display:flex;align-items:center;gap:24px}.view-switch{display:flex;border:1px solid #aaa;border-radius:8px;overflow:hidden}.view-switch button{padding:9px 16px;background:#fff;border:0;font-size:13px}.view-switch button[aria-pressed=true]{background:#444;color:#fff}.steps{display:flex;gap:8px}.steps button{width:38px;height:38px;border:2px solid #444;border-radius:9px;background:#fff;box-shadow:2px 2px #444;font-weight:900;font-size:16px}.steps button[aria-pressed=true]{background:#444;color:white;outline:2px solid #444;outline-offset:3px}main{max-width:900px;margin:24px auto;padding:0 28px 40px}.days{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:26px}.days button{padding:12px 4px;border:1px solid #aaa;border-radius:9px;background:#fff;font-weight:700}.days button[aria-pressed=true]{background:#dededb;border:2px solid #444;padding:11px 3px}.calendar{display:grid;grid-template-columns:1fr;gap:20px}.day-column{min-width:0}.day-title{display:none;font-size:15px;font-weight:800;margin:0 0 20px;text-align:center}.event-list{display:flex;flex-direction:column;gap:19px}.event{border:3px solid #333;border-radius:25px;background:#fff;box-shadow:3px 4px #333;display:flex;align-items:stretch;min-height:105px;overflow:hidden}.emoji{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:95px;font-size:34px;background:#f1f1ef}.event-content{flex:1;min-width:0;padding:22px 12px 22px 20px;display:flex;flex-direction:column;justify-content:center;gap:6px}.time{font-size:25px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}.event-title{font-size:16px;font-weight:700;line-height:1.4}.actions{display:flex;gap:20px;padding:0 22px 0 8px;align-items:center;flex-shrink:0}.adjust{display:flex;gap:9px}.adjust button{width:36px;height:36px;background:white;border:2px solid #333;border-radius:50%;box-shadow:1px 2px #333;font-size:23px;font-weight:700;line-height:1}.check{width:44px;height:44px;border:2.5px solid #333;border-radius:12px;box-shadow:2px 2px #333;background:white;font-size:28px;font-weight:900;line-height:1}.check[aria-pressed=true]{background:#444;color:#fff}.event.done .emoji,.event.done .event-content{opacity:.4}.event.done .event-title{text-decoration:line-through}.event.done{background:#f4f4f2}.week{max-width:none}.week .days{display:none}.week .calendar{grid-template-columns:repeat(7,minmax(220px,1fr));gap:20px;overflow:auto;padding:4px 6px 10px}.week .day-title{display:block}.week .event{flex-wrap:wrap;min-height:138px;border-radius:18px;border-width:2px;box-shadow:2px 3px #333}.week .emoji{width:50px;font-size:24px}.week .event-content{padding:15px 8px;gap:6px}.week .time{font-size:21px}.week .event-title{font-size:13px}.week .actions{width:100%;padding:8px 12px 12px;justify-content:space-between;gap:12px;border-top:1px solid #eee}.week .adjust button{width:29px;height:29px;font-size:19px}.week .check{width:32px;height:32px;border-radius:9px;font-size:23px}.notice{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:10px 16px;border-radius:8px;font-size:12px;z-index:10}.notice:empty{display:none}
+@media(max-width:650px){header{padding:18px;flex-wrap:wrap;gap:18px}.brand{font-size:21px}.header-tools{width:100%;justify-content:space-between;gap:12px}.steps{gap:8px}.steps button{width:32px;height:34px;font-size:15px}.view-switch button{padding:9px 12px;font-size:12px}main{padding:0 17px 32px;margin-top:22px}.days{gap:6px;margin-bottom:24px}.days button{font-size:12px;padding:11px 0}.days button[aria-pressed=true]{padding:10px 0}.event{min-height:100px;border-radius:22px;border-width:2.5px;box-shadow:2px 3px #333}.emoji{width:58px;font-size:25px}.event-content{padding:18px 5px 18px 12px;gap:7px}.time{font-size:22px}.event-title{font-size:13px}.actions{gap:10px;padding:0 12px 0 4px}.adjust{gap:5px}.adjust button{width:29px;height:29px;font-size:20px}.check{width:34px;height:34px;border-radius:10px;font-size:23px}.event-list{gap:17px}.week .calendar{grid-template-columns:repeat(7,220px)}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 
-        const INITIAL_WEEKEND = [
-            { id: 'we_0700', time: '07:00', title: 'Wake Up!', emoji: '🌞' },
-            { id: 'we_0800', time: '08:00', title: 'Breakfast', emoji: '🥛' },
-            { id: 'we_0900', time: '09:00', title: 'Play Time', emoji: '🎢' },
-            { id: 'we_1000', time: '10:00', title: 'Play Time', emoji: '🎈' },
-            { id: 'we_1100', time: '11:00', title: 'Lunch', emoji: '🥗' },
-            { id: 'we_1200', time: '12:00', title: 'TV & Play', emoji: '📺' },
-            { id: 'we_1300', time: '13:00', title: 'Nap Time', emoji: '😴' },
-            { id: 'we_1400', time: '14:00', title: 'Nap Time', emoji: '💤' },
-            { id: 'we_1500', time: '15:00', title: 'Tea Time', emoji: '🍰' },
-            { id: 'we_1600', time: '16:00', title: 'Outdoor Play', emoji: '🌳' },
-            { id: 'we_1700', time: '17:00', title: 'Going Home', emoji: '🏠' },
-            { id: 'we_1800', time: '18:00', title: 'Dinner Time', emoji: '🥘' },
-            { id: 'we_1900', time: '19:00', title: 'Bath & Wash Up', emoji: '🛀' },
-            { id: 'we_2000', time: '20:00', title: 'Fun with Mommy', emoji: '🧸 💃🏻' },
-            { id: 'we_2100', time: '21:00', title: 'Sleepy Time', emoji: '🌃' }
-        ];
-
-        let WEEKDAY_SCHEDULE = JSON.parse(JSON.stringify(INITIAL_WEEKDAY));
-        let WEEKEND_SCHEDULE = JSON.parse(JSON.stringify(INITIAL_WEEKEND));
-
-        function getStartTime(timeStr) {
-            if (!timeStr) return 0;
-            const match = timeStr.match(/(\d{2}):(\d{2})/);
-            return match ? parseInt(match[1]) * 60 + parseInt(match[2]) : 0;
-        }
-
-        const CONVERSATIONS = {
-            'wd_0700': { mom: "Rise and shine! Let's eat your yummy toast.", kid: "Good morning! It smells so good!" },
-            'wd_0800': { mom: "Time for school! Grab your backpack.", kid: "I'm ready! Let's go!" },
-            'wd_0900': { mom: "Let's read a wonderful story book together.", kid: "I want to read about the big dinosaurs!" },
-            'wd_1000': { mom: "Time to draw something beautiful!", kid: "I will draw a rainbow for you!" },
-            'wd_1100': { mom: "Lunch time! Let's wash those little hands.", kid: "Scrub scrub scrub! I'm so hungry!" },
-            'wd_1200': { mom: "It's nap time. Let's recharge your energy.", kid: "See you when I wake up!" },
-            'wd_1300': { mom: "Still resting well, my sunshine.", kid: "Zzz... sweet dreams..." },
-            'wd_1400': { mom: "Time to move your body! Ready to play?", kid: "Look at me! I can jump so high!" },
-            'wd_1500': { mom: "Would you like some fruit and tea?", kid: "Yes, please! I love sweet apples!" },
-            'wd_1600': { mom: "Let's have some more fun before home.", kid: "Yay! Let's go to the slide!" },
-            'wd_1630': { mom: "School is over! Let's go ride your bike and play!", kid: "Yay! I love riding my bike!" },
-            'wd_1700': { mom: "Let's play on the slide for a while!", kid: "Wheee! This is so fun!" },
-            'wd_1730': { mom: "It's time to head back home now.", kid: "I'm coming! Let's see Daddy!" },
-            'wd_1800': { mom: "Dinner is served! Eat your vegetables.", kid: "Crunch crunch! They are so healthy!" },
-            'wd_1900': { mom: "Time for a bubbly bath!", kid: "Splash splash! Bubbles on my tummy!" },
-            'wd_2000': { mom: "Let's play together! What shall we do?", kid: "Let's dance with my teddy bear!" },
-            'wd_2100': { mom: "Time for bed. Sleep tight.", kid: "Good night, Mommy. I love you!" },
-            'we_0700': { mom: "Wake up, sunshine! It's a happy weekend.", kid: "Morning! Can we play together all day?" },
-            'we_0800': { mom: "Drink your milk, little one.", kid: "Slurp! It makes me strong!" },
-            'we_0900': { mom: "It's playtime! What toys do you want?", kid: "I want to build a giant castle!" },
-            'we_1000': { mom: "Your castle is getting so big!", kid: "Look! It has a tall tower now!" },
-            'we_1100': { mom: "Time for a healthy lunch together.", kid: "I like eating with you, Mommy!" },
-            'we_1200': { mom: "You can watch your favorite cartoon now.", kid: "Yay! This is my favorite part!" },
-            'we_1300': { mom: "Nap time, sunshine. Have a nice rest.", kid: "Sweet dreams during my nap!" },
-            'we_1400': { mom: "Resting makes you grow tall.", kid: "I'm still a little bit sleepy..." },
-            'we_1500': { mom: "Time for a little cake and juice.", kid: "Yummy! Thank you, Mommy!" },
-            'we_1600': { mom: "Let's go outside and play in the garden!", kid: "I want to catch the butterflies!" },
-            'we_1700': { mom: "The sun is going down. Time to go home.", kid: "Okay! I'm hungry for dinner!" },
-            'we_1800': { mom: "Dinner is ready! It's your favorite soup.", kid: "Yummy! It smells so good!" },
-            'we_1900': { mom: "Time for a bubbly bath!", kid: "Splash splash! Bubbles on my tummy!" },
-            'we_2000': { mom: "Let's play together! What shall we do?", kid: "Let's dance with my teddy bear!" },
-            'we_2100': { mom: "Bedtime, my sleepyhead. I love you.", kid: "Good night! Don't forget my kiss!" }
-        };
+/* Rounded, outlined cards from the original Routine Explorer. */
+:root,[data-theme="weekday"]{--ink:#182b24;--page:#f1f8f3;--card:#f8fffb;--soft:#d1fae5;--accent:#a7f3d0;--strong:#047857;--muted:#526b60}
+[data-theme="weekend"]{--ink:#33242d;--page:#fcf2f6;--card:#fff9fc;--soft:#fce0ed;--accent:#f9bcd6;--strong:#b13269;--muted:#856577}
+body{background:var(--page);color:var(--ink);transition:background-color .2s ease;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",sans-serif}button:focus-visible{outline:3px solid var(--strong);outline-offset:5px}header{padding:24px 32px;border-bottom:3px solid var(--ink);position:sticky;top:0;z-index:10;background:#fffdfd}.brand{display:flex;align-items:center;gap:13px;font-size:25px;letter-spacing:-.5px}.brand-mark{width:45px;height:45px;display:flex;align-items:center;justify-content:center;border:2.5px solid var(--ink);border-radius:14px;background:var(--accent);box-shadow:2px 3px var(--ink)}.header-tools{gap:25px}.view-switch{border:2.5px solid var(--ink);border-radius:13px;padding:3px;gap:3px;background:#fff;overflow:visible}.view-switch button{border-radius:8px;padding:9px 16px;font-weight:800;background:white}.view-switch button[aria-pressed=true]{background:var(--soft);color:var(--ink)}.steps{gap:10px}.steps button{width:40px;height:40px;border:2.5px solid #202720;box-shadow:2px 3px #202720;border-radius:11px;font-size:18px;transition:transform .12s ease}.steps button[aria-pressed=true]{outline:2.5px solid #202720;outline-offset:4px;transform:translateY(-2px)}.steps [data-step="1"],.steps [data-step="1"][aria-pressed=true]{background:#ef4444;color:#fff}.steps [data-step="3"],.steps [data-step="3"][aria-pressed=true]{background:#facc15;color:#282818}.steps [data-step="5"],.steps [data-step="5"][aria-pressed=true]{background:#2563eb;color:#fff}.steps [data-step="7"],.steps [data-step="7"][aria-pressed=true]{background:var(--rainbow-vivid);color:#fff;text-shadow:1px 1px 2px #000,-1px -1px 2px #000}.steps [data-step="10"],.steps [data-step="10"][aria-pressed=true]{background:#fff;border-color:#ef4444;color:#ef4444}
+main{max-width:960px;padding:0 32px 50px;margin-top:28px}.days{gap:12px;margin-bottom:32px}.days button{font-size:14px;font-weight:850;padding:14px 4px;border:2px solid #26342e;border-radius:13px;background:#e5f7ed;box-shadow:2px 3px #26342e;color:#224637;transition:transform .12s ease}.days button.weekend{background:#fce0ed;color:#77314f}.days button[aria-pressed=true]{border:2px solid #26342e;padding:14px 4px;background:#a7f3d0;outline:2px solid #26342e;outline-offset:4px;transform:translateY(-2px)}.days button.weekend[aria-pressed=true]{background:#f9bcd6}.event-list{gap:24px}.event{border:3px solid var(--ink);border-radius:29px;box-shadow:4px 5px var(--ink);background:var(--card);min-height:116px}.emoji{width:110px;background:var(--soft);display:flex;align-items:center;justify-content:center;padding:0;font-size:36px}.emoji>span{width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:38px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;flex-shrink:0}.event-content{padding:24px 14px 24px 23px;gap:9px}.time{font-size:29px;font-weight:900;letter-spacing:-.5px;color:var(--ink)}.event-title{font-size:17px;font-weight:750;color:var(--muted)}.actions{gap:24px;padding-right:26px}.adjust{gap:11px}.adjust button{width:38px;height:38px;font-size:23px;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;border:2.5px solid var(--ink);box-shadow:2px 2px var(--ink);background:#fff}.adjust button:hover{background:var(--soft)}.check{width:48px;height:48px;border:3px solid var(--ink);border-radius:14px;box-shadow:2px 3px var(--ink);font-size:29px;display:flex;align-items:center;justify-content:center;padding:0}.check[aria-pressed=true]{background:var(--strong);color:#fff}.event.done{background:var(--page)}.event.done .emoji,.event.done .event-content{opacity:.38}.week .calendar{padding:5px 8px 12px;gap:24px;grid-template-columns:repeat(7,minmax(230px,1fr))}.week .day-title{background:var(--accent);border:2.5px solid var(--ink);border-radius:13px;padding:13px;box-shadow:2px 3px var(--ink);margin:0 0 24px;font-size:16px}.week .event{border-width:2.5px;border-radius:20px;min-height:150px;box-shadow:2px 3px var(--ink)}.week .emoji{width:57px}.week .emoji>span{width:36px;height:36px;font-size:28px}.week .event-content{padding:18px 10px;gap:9px}.week .time{font-size:23px}.week .event-title{font-size:14px}.week .actions{border-top:1px solid var(--soft);gap:12px;padding:10px 13px 13px}.week .adjust button{width:31px;height:31px;font-size:20px}.week .check{width:34px;height:34px;font-size:23px;border-width:2px;border-radius:10px}
+@media(max-width:650px){header{padding:17px 18px 19px;gap:20px}.brand{font-size:23px;gap:10px}.brand-mark{width:37px;height:37px;border-radius:12px;box-shadow:2px 2px var(--ink)}.brand-mark svg{width:22px;height:22px}.header-tools{gap:13px}.view-switch{padding:3px;border-width:2px;border-radius:11px}.view-switch button{padding:8px 10px;font-size:12px}.steps{gap:8px}.steps button{width:32px;height:34px;border-width:2px;border-radius:9px;font-size:16px;box-shadow:1px 2px #202720}.steps button[aria-pressed=true]{outline-width:2px;outline-offset:3px}main{padding:0 18px 35px;margin-top:25px}.days{gap:7px;margin-bottom:28px}.days button,.days button[aria-pressed=true]{font-size:12px;padding:12px 0;border-width:1.5px;border-radius:10px;box-shadow:1px 2px #26342e}.days button[aria-pressed=true]{outline-width:1.5px;outline-offset:3px}.event-list{gap:21px}.event{min-height:104px;border-width:2.5px;border-radius:24px;box-shadow:3px 4px var(--ink)}.emoji{width:59px}.emoji>span{width:38px;height:38px;font-size:29px}.event-content{padding:20px 4px 20px 12px;gap:8px}.time{font-size:24px}.event-title{font-size:13px}.actions{gap:10px;padding:0 12px 0 4px}.adjust{gap:6px}.adjust button{width:29px;height:29px;border-width:2px;font-size:19px;box-shadow:1px 2px var(--ink)}.check{width:35px;height:35px;border-width:2.5px;border-radius:10px;font-size:23px;box-shadow:1px 2px var(--ink)}.week .calendar{grid-template-columns:repeat(7,230px)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 
-        function getVoicesByRole() {
-            const enVoices = voices.filter(v => v.lang.startsWith('en'));
-            const femaleNames = ['samantha', 'zira', 'ava', 'victoria', 'karen', 'premium', 'tessa', 'moira'];
-            const femaleVoices = enVoices.filter(v => femaleNames.some(name => v.name.toLowerCase().includes(name)));
-            const list = femaleVoices.length >= 2 ? femaleVoices : enVoices;
-            return { mom: list[0] || null, kid: list.length > 1 ? list[list.length - 1] : (list[0] || null) };
-        }
 
-        function speak(text, role) {
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel(); 
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            
-            const chosenVoices = getVoicesByRole();
-            const voice = (role === 'mom') ? chosenVoices.mom : chosenVoices.kid;
-            if (voice) utterance.voice = voice;
-            
-            if (role === 'mom') {
-                utterance.pitch = 0.9;  
-                utterance.rate = 0.95;
-            } else {
-                utterance.pitch = 1.6;  
-                utterance.rate = 1.15;
-            }
-            
-            window.speechSynthesis.speak(utterance);
-        }
+/* Preserve the original style; pressed controls sink into a flat surface. */
+.steps button[aria-pressed=true]{outline:none;transform:translate(2px,3px);box-shadow:none}
+.days button[aria-pressed=true]{outline:none;transform:translate(2px,3px);box-shadow:none}
+.steps button:active,.days button:active,.adjust button:active,.check:active{transform:translate(2px,3px);box-shadow:none}
+.check[aria-pressed=true]{transform:translate(2px,3px);box-shadow:none}
+.steps button[aria-pressed=true]:focus-visible,.days button[aria-pressed=true]:focus-visible{outline:none}
+body[data-input="keyboard"] .steps button[aria-pressed=true]:focus-visible,body[data-input="keyboard"] .days button[aria-pressed=true]:focus-visible{outline:3px solid var(--strong);outline-offset:4px}
+@media(max-width:650px){.steps button[aria-pressed=true],.days button[aria-pressed=true]{outline:none;transform:translate(1px,2px);box-shadow:none}}
 
-let voices=[],audioCtx=null,currentStep=1,selectedDay=(new Date().getDay()+6)%7,openedId=null;
-const DAYS=['周一','周二','周三','周四','周五','周六','周日'];
-const EN_DAYS=['MON','TUE','WED','THU','FRI','SAT','SUN'];
-const CN={'Wake Up & Breakfast':'起床 · 吃早餐','Go to School':'出门去幼儿园','Reading Time':'阅读时间','Drawing Time':'画画时间','Lunch Time':'午餐时间','Nap Time':'午睡时间','Play Time':'自由玩耍','Tea Time':'下午茶','School Out & Play':'放学 · 户外玩耍','Going Home':'回家啦','Yummy Dinner':'晚餐时间','Bath & Wash Up':'洗澡 · 洗漱','Fun with Mommy':'亲子时光','Nighty Night':'晚安，好梦','Wake Up!':'起床啦','Breakfast':'早餐时间','Lunch':'午餐时间','TV & Play':'动画 · 玩耍','Outdoor Play':'户外玩耍','Dinner Time':'晚餐时间','Sleepy Time':'晚安，好梦'};
-const minutes=t=>Number(t.slice(0,2))*60+Number(t.slice(3));
-const clock=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;
-const clone=x=>JSON.parse(JSON.stringify(x));
-function defaults(){return DAYS.map((_,day)=>{
- const weekend=day>=5, source=weekend?INITIAL_WEEKEND:INITIAL_WEEKDAY;
- let events=source.filter(e=>weekend||minutes(e.time)<540||minutes(e.time)>=990).map(e=>({...e,sourceId:e.id,id:`d${day}_${e.id}`,title:CN[e.title]||e.title,en:e.title,type:'routine'}));
- if(!weekend){
-  if(day===0||day===4){events.find(e=>e.sourceId==='wd_0700').time='07:30';events.find(e=>e.sourceId==='wd_0800').time='08:30';events.find(e=>e.sourceId==='wd_1630').time='16:50';}
-  events.push({id:`d${day}_school`,time:'09:00',end:(day===0||day===4)?'16:50':'16:30',title:'幼儿园的一天',en:'Kindergarten',emoji:'🏫',type:'school'});
- }
- const course=(time,end,title,en,emoji,type)=>({id:`d${day}_class`,time,end,title,en,emoji,type});
- if(day===1){events.find(e=>e.sourceId==='wd_1900').time='20:00';events.find(e=>e.sourceId==='wd_2000').time='20:30';events.push(course('19:00','20:00','英语课','English class','📚','course'));}
- if(day===5){events=events.filter(e=>e.sourceId!=='we_1700');events.push(course('16:50','18:00','舞蹈课','Dance class','🩰','dance'));}
- if(day===6){events=events.filter(e=>e.sourceId!=='we_1700');events.push(course('17:00','18:00','英语课','English class','📚','course'));}
- return events.sort((a,b)=>minutes(a.time)-minutes(b.time));
-});}
-const STORAGE='routine_weekly_v1';
-let schedules=defaults(),done={},savedWeek='';
-function weekKey(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-(d.getDay()+6)%7);return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
-function notify(message){const t=document.getElementById('toast');t.textContent=message;t.hidden=false;clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.hidden=true,4000);}
-function save(){try{localStorage.setItem(STORAGE,JSON.stringify({schedules,done,week:weekKey()}));}catch{notify('浏览器未能保存，关闭页面后修改可能丢失。');}}
-function load(){try{const raw=JSON.parse(localStorage.getItem(STORAGE));const base=defaults();if(raw&&Array.isArray(raw.schedules)&&raw.schedules.length===7){schedules=base.map((day,i)=>day.map(item=>{const saved=raw.schedules[i]?.find(e=>e.id===item.id);return saved&&/^\d{2}:\d{2}$/.test(saved.time)&&minutes(saved.time)<1440&&(!item.end||(/^\d{2}:\d{2}$/.test(saved.end)&&minutes(saved.end)>minutes(saved.time)&&minutes(saved.end)<1440))?{...item,time:saved.time,...(item.end?{end:saved.end}:{})}:item;}));if(raw.week===weekKey()&&raw.done&&typeof raw.done==='object')done=raw.done;}}catch{/* Invalid or unavailable storage uses safe defaults. */}savedWeek=weekKey();}
-function playTickSound(){try{audioCtx||=new(window.AudioContext||window.webkitAudioContext)();const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.frequency.value=1400;gain.gain.setValueAtTime(.05,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.05);osc.connect(gain);gain.connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+.05);}catch{}}
-function setStep(n){currentStep=n;document.getElementById('step-label').textContent=n;document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.step)===n)));playTickSound();}
-function timeRange(e){return e.time+(e.end?'–'+e.end:'');}
-function isCurrent(e,day,sorted,index){const now=new Date();if(day!==(now.getDay()+6)%7)return false;const min=now.getHours()*60+now.getMinutes();return min>=minutes(e.time)&&min<(e.end?minutes(e.end):sorted[index+1]?minutes(sorted[index+1].time):1440);}
+/* Light card text surfaces; selected weekdays use a deeper matching hue. */
+.days button.weekday[aria-pressed=true]{background:#047857;color:#fff}
+.days button.weekend[aria-pressed=true]{background:#b13269;color:#fff}
+.days button.weekday:active{background:#047857;color:#fff}
+.days button.weekend:active{background:#b13269;color:#fff}
+.event.done .event-content,.event.done .actions{background:var(--page)}
+
+
+/* Live clock and full weekday names in each language. */
+header{padding-top:22px;padding-bottom:22px;gap:25px}.clock{flex-shrink:0}.clock>time{display:block;color:#10182b;font-size:66px;font-weight:950;line-height:1;letter-spacing:-3px;font-variant-numeric:tabular-nums}.clock-meta{display:flex;align-items:center;gap:14px;margin-top:13px}.clock-meta>span:first-child{font-size:23px;font-weight:800;color:#64748b;line-height:1}.clock-meta>span:last-child{font-size:14px;font-weight:850;line-height:1.3;border:2px solid #182b24;border-radius:7px;padding:5px 11px;background:#a7f3d0;color:#14614b}.clock-meta>span[data-today-theme="weekend"]{background:#f9bcd6;color:#8c325a;border-color:#33242d}.language-switch{display:flex;border:2px solid var(--ink);border-radius:12px;padding:3px;gap:2px}.language-switch button{border:0;background:transparent;border-radius:7px;padding:8px 11px;font-size:12px;font-weight:750}.language-switch button[aria-pressed=true]{background:var(--soft)}.header-tools{gap:18px}.event-title{overflow-wrap:break-word}[data-language="en"] .days{grid-template-columns:repeat(7,minmax(104px,1fr));overflow-x:auto;padding:2px 4px 8px;margin-left:-4px;margin-right:-4px;gap:10px}[data-language="en"] .days button{font-size:12px;white-space:nowrap}[data-language="en"] .event-title{font-size:16px}[data-language="en"] .week .event-title{font-size:13px}.week .day-title{overflow-wrap:normal}
+@media(min-width:651px) and (max-width:1000px){header{gap:18px;padding-left:24px;padding-right:24px}.clock>time{font-size:54px}.clock-meta{gap:9px}.clock-meta>span:first-child{font-size:18px}.clock-meta>span:last-child{font-size:12px;padding:4px 7px}.header-tools{gap:12px}.language-switch button{padding:8px;font-size:11px}.view-switch button{padding:9px 12px}.steps{gap:7px}.steps button{width:35px;height:37px}}
+@media(max-width:650px){header{padding:18px 18px 22px;gap:22px;align-items:center}.clock>time{font-size:52px;letter-spacing:-2px}.clock-meta{margin-top:10px;gap:10px}.clock-meta>span:first-child{font-size:18px}.clock-meta>span:last-child{font-size:12px;padding:4px 8px;border-radius:6px}.header-tools{width:100%;gap:13px}.language-switch{position:absolute;top:24px;right:18px;border-width:1.5px;border-radius:10px}.language-switch button{font-size:11px;padding:7px 8px}[data-language="en"] .days{grid-template-columns:repeat(7,104px)}[data-language="en"] .event-title{font-size:12px;line-height:1.5}[data-language="en"] .clock-meta>span:first-child{font-size:16px}[data-language="en"] .clock-meta{gap:8px}}
+
+
+/* White page and card surfaces in both views, independent of selected day. */
+:root,[data-theme="weekday"],[data-theme="weekend"]{--page:#fff;--card:#fff}
+body,main,.calendar,.day-column{background:#fff}
+.event,.event.done,.event .event-content,.event .actions,.event.done .event-content,.event.done .actions{background:#fff}
+
+
+/* Sunday–Saturday follow Numberblocks 1–7. Variables are scoped per day. */
+[data-palette]{--ink:#1d2930;--page:#fff;--card-bg:#fff;--time-color:#1d2930;--title-color:#67757a;--icon-bg:var(--soft);--line:#22313a;--control-bg:#fff;--control-color:#26363d;--control-line:#26363d;--button-text:#fff}
+[data-palette="1"]{--soft:#fbe4e8;--accent:#ed9ba8;--strong:#a9324d;--card-bg:#713044;--icon-bg:#8b3b54;--time-color:#fff9fb;--title-color:#f5dce4;--line:#482330;--control-bg:#954760;--control-color:#fff8fa;--control-line:#e6bac9}
+[data-palette="2"]{--soft:#fff0de;--accent:#ffd09b;--strong:#b86721;--title-color:#8b725f}
+[data-palette="3"]{--soft:#fff8cf;--accent:#f6e596;--strong:#9a781c;--title-color:#847b58}
+[data-palette="4"]{--soft:#e1f6e6;--accent:#a9dfb8;--strong:#348450;--title-color:#617869}
+[data-palette="5"]{--soft:#e4efff;--accent:#b6d3f7;--strong:#326ea6;--title-color:#647b91}
+[data-palette="6"]{--soft:#eaeafa;--accent:#c3c4e8;--strong:#585c9b;--title-color:#74738e}
+[data-palette="7"]{--soft:#efeaf2;--accent:#d9cddd;--strong:#746180;--card-bg:linear-gradient(115deg,#65404d 0%,#6b5241 19%,#626044 34%,#455e51 49%,#405969 64%,#494e6d 80%,#604767 100%);--icon-bg:#ffffff15;--time-color:#fffaf5;--title-color:#f0e5ef;--line:#39313f;--control-bg:#ffffff18;--control-color:#fff;--control-line:#d6ceda}
+body,main,.calendar,.day-column{background:#fff}
+.day-column .event,.day-column .event.done{background:var(--card-bg);border-color:var(--line);box-shadow:4px 5px var(--line)}
+.day-column .event .event-content,.day-column .event .actions,.day-column .event.done .event-content,.day-column .event.done .actions{background:transparent}
+.day-column .event .emoji{background:var(--icon-bg)}
+.day-column .event .time{color:var(--time-color)}
+.day-column .event .event-title{color:var(--title-color)}
+.day-column .adjust button,.day-column .check{background:var(--control-bg);color:var(--control-color);border-color:var(--control-line);box-shadow:2px 2px var(--line)}
+.day-column .adjust button:hover{background:var(--accent)}
+.day-column[data-theme="weekend"] .adjust button:hover{background:#ffffff30}
+.day-column .check[aria-pressed=true]{background:var(--strong);color:#fff;border-color:var(--control-line);box-shadow:none;transform:translate(2px,3px)}
+.day-column .adjust button:active,.day-column .check:active{box-shadow:none;transform:translate(2px,3px)}
+.day-column .event.done .emoji,.day-column .event.done .event-content{opacity:.4}
+.days button[data-palette]{background:var(--soft);color:var(--strong);border-color:#22313a}
+.days button[data-palette][aria-pressed=true],.days button[data-palette]:active{background:var(--strong);color:#fff}
+.days button[data-palette="1"]{background:#8b3b54;color:#fff0f4}
+.days button[data-palette="1"][aria-pressed=true],.days button[data-palette="1"]:active{background:#713044;color:#fff}
+.days button[data-palette="7"],.days button[data-palette="7"][aria-pressed=true],.days button[data-palette="7"]:active{background:var(--card-bg);color:#fff}
+.week .day-title{background:var(--soft);color:var(--strong);border-color:var(--line);box-shadow:2px 3px var(--line)}
+.week .day-column[data-theme="weekend"] .day-title{background:var(--card-bg);color:#fff}
+.week .day-column .event{box-shadow:2px 3px var(--line)}
+.week .day-column .actions{border-top-color:#00000009}
+.week .day-column[data-theme="weekend"] .actions{border-top-color:#ffffff16}
+.clock-meta>span#header-day[data-palette]{background:var(--soft);color:var(--strong);border-color:#24323b}
+.clock-meta>span#header-day[data-palette="1"],.clock-meta>span#header-day[data-palette="7"]{background:var(--card-bg);color:#fff}
+.steps [data-step="7"],.steps [data-step="7"][aria-pressed=true]{background:var(--rainbow-vivid);color:#fff;text-shadow:1px 1px 1px #4e4059}
+@media(max-width:650px){.day-column .event{box-shadow:3px 4px var(--line)}.day-column .adjust button,.day-column .check{box-shadow:1px 2px var(--line)}.day-column .check[aria-pressed=true],.day-column .check:active,.day-column .adjust button:active{box-shadow:none}.week .day-column .event{box-shadow:2px 3px var(--line)}}
+
+
+/* Monday=1 … Sunday=7; every card uses a white text surface. */
+[data-palette="1"]{--soft:#fde9ec;--accent:#f4b4bf;--strong:#b54158;--card-bg:#fff;--icon-bg:var(--soft);--time-color:#1d2930;--title-color:#8a6870;--line:#26323a;--control-bg:#fff;--control-color:#26363d;--control-line:#26363d}
+[data-palette="6"]{--soft:#dedbfb;--accent:#aa9de6;--strong:#4338ac;--card-bg:#fff;--icon-bg:var(--soft);--time-color:#1d2930;--title-color:#686286;--line:#26323a;--control-bg:#fff;--control-color:#26363d;--control-line:#26363d}
+[data-palette="7"]{--soft:#f3eef6;--accent:#ded3e6;--strong:#85718e;--card-bg:#fff;--rainbow:linear-gradient(135deg,#f6dce1 0 14.2857%,#f6e5d2 14.2857% 28.5714%,#f6efce 28.5714% 42.8571%,#e0efdd 42.8571% 57.1428%,#dcecf3 57.1428% 71.4285%,#e3e3f2 71.4285% 85.7142%,#eddfef 85.7142% 100%);--icon-bg:var(--rainbow);--time-color:#1d2930;--title-color:#82738a;--line:#26323a;--control-bg:#fff;--control-color:#26363d;--control-line:#26363d}
+.days button[data-palette="1"]{background:var(--soft);color:var(--strong)}
+.days button[data-palette="1"][aria-pressed=true],.days button[data-palette="1"]:active{background:var(--strong);color:#fff}
+.days button[data-palette="7"]{background:var(--rainbow);color:#675b72}
+.days button[data-palette="7"][aria-pressed=true],.days button[data-palette="7"]:active{background:var(--rainbow-vivid);color:#fff}
+.week .day-column[data-theme="weekend"] .day-title{background:var(--soft);color:var(--strong)}
+.week .day-column[data-palette="7"] .day-title{background:var(--rainbow);color:#675b72}
+.clock-meta>span#header-day[data-palette="1"]{background:var(--soft);color:var(--strong)}
+.clock-meta>span#header-day[data-palette="7"]{background:var(--rainbow);color:#675b72}
+.day-column[data-theme="weekend"] .adjust button:hover{background:var(--soft)}
+.week .day-column[data-theme="weekend"] .actions{border-top-color:#00000009}
+
+
+/* Keep the adjustment Seven vivid, independently of Sunday's pastel stripes. */
+.steps [data-step="7"],.steps [data-step="7"][aria-pressed=true]{background:var(--rainbow-vivid);color:#fff;text-shadow:1px 1px 2px #000,-1px -1px 2px #000}
+
+
+/* Numberblocks stickers: retain each supplied image's natural aspect ratio. */
+[data-palette="1"]{--sticker-height:65px}
+[data-palette="2"]{--sticker-height:74px}
+[data-palette="3"]{--sticker-height:69px}
+[data-palette="4"]{--sticker-height:86px}
+[data-palette="5"]{--sticker-height:77px}
+[data-palette="6"]{--sticker-height:79px}
+[data-palette="7"]{--sticker-height:80px}
+main{margin-top:18px}
+.days,[data-language="en"] .days{grid-template-columns:repeat(7,minmax(114px,1fr));padding:42px 6px 10px 2px;overflow-x:auto;overflow-y:hidden;margin-left:-2px;margin-right:-6px;margin-bottom:22px;gap:12px}
+.days button,.days button[aria-pressed=true]{position:relative;height:64px;padding:0 12px;text-align:left;overflow:visible;isolation:isolate;display:flex;align-items:center;font-size:14px}
+.weekday-label{position:relative;z-index:1;white-space:nowrap}
+.weekday-sticker{position:absolute;right:0;bottom:6px;z-index:2;height:var(--sticker-height);width:auto;max-width:none;object-fit:contain;pointer-events:none;user-select:none}
+[data-palette="7"]>.weekday-sticker{right:3px}
+.days button[data-palette="6"]>.weekday-sticker{right:-6px}
+[data-language="en"] .days{grid-template-columns:repeat(7,minmax(176px,1fr))}
+[data-language="en"] .days button{font-size:13px}
+.week .calendar{padding-top:44px}
+.week .day-title{position:relative;height:76px;padding:0 18px;text-align:left;display:flex;align-items:center;isolation:isolate}
+.week .day-title .weekday-sticker{height:calc(var(--sticker-height) * 1.15);right:8px;bottom:7px}
+@media(max-width:650px){
+  .days{grid-template-columns:repeat(7,114px);gap:10px}
+  .days button,.days button[aria-pressed=true]{height:64px;padding:0 12px;font-size:14px}
+  [data-language="en"] .days{grid-template-columns:repeat(7,176px)}
+}
+
+
+/* Restore the original reset control beside the adjustment steps. */
+.header-tools{flex-wrap:wrap;justify-content:flex-end}
+.reset-records{width:40px;height:40px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;background:#fff;border:2.5px solid #26323a;border-radius:11px;box-shadow:2px 3px #26323a;color:#26323a}
+.reset-records:hover{background:#fff}
+.reset-records:active{transform:translate(2px,3px);box-shadow:none}
+@media(max-width:650px){.header-tools{gap:10px;justify-content:space-between}.steps{gap:6px}.reset-records{width:32px;height:34px;border-width:2px;border-radius:9px;box-shadow:1px 2px #26323a}.reset-records svg{width:21px;height:21px}.reset-records:active{transform:translate(1px,2px);box-shadow:none}}
+
+
+/* Keep reset immediately before the language switch at every screen size. */
+.language-tools{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.language-tools .language-switch{position:static}
+@media(min-width:651px) and (max-width:1000px){.language-tools{gap:12px}}
+@media(max-width:650px){.language-tools{position:absolute;top:24px;right:18px;gap:10px}}
+
+
+/* Seven uses crisp diagonal rainbow bands, with a shared vivid active palette. */
+:root{--rainbow-vivid:linear-gradient(135deg,#ef4444 0 14.2857%,#fb923c 14.2857% 28.5714%,#fde047 28.5714% 42.8571%,#4ade80 42.8571% 57.1428%,#38bdf8 57.1428% 71.4285%,#6366f1 71.4285% 85.7142%,#c084fc 85.7142% 100%)}
+.day-column[data-palette="7"] .check[aria-pressed=true]{background:var(--rainbow-vivid);color:#fff;text-shadow:0 1px 2px #26323a,0 0 2px #26323a}
+.days button[data-palette="7"][aria-pressed=true] .weekday-label,.days button[data-palette="7"]:active .weekday-label{text-shadow:0 1px 2px #26323a,0 0 2px #26323a}
+
+
+/* A 2 CSS-pixel white sticker border follows the transparent silhouette. */
+.weekday-sticker{filter:url(#sticker-white-outline)}
+.sticker-filter-defs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+
+/* Both languages stack weekday artwork above the label without horizontal scrolling. */
+body[data-language] .days{grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;padding-top:28px;overflow:visible;margin-left:-2px;margin-right:-6px}
+body[data-language] .days button,body[data-language] .days button[aria-pressed=true]{min-width:0;height:112px;padding:78px 4px 10px;justify-content:center;text-align:center;font-size:13px}
+body[data-language] .days .weekday-label{max-width:100%;line-height:20px}
+body[data-language] .days button .weekday-sticker{left:50%;right:auto;bottom:38px;transform:translateX(-50%)}
+body[data-language] .week .day-title{height:120px;padding:0 8px 12px;justify-content:center;align-items:flex-end;text-align:center}
+body[data-language] .week .day-title .weekday-sticker{left:50%;right:auto;bottom:42px;transform:translateX(-50%)}
+@media(max-width:760px){
+  body[data-language] .days{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:10px;row-gap:30px}
+  body[data-language] .days button,body[data-language] .days button[aria-pressed=true]{font-size:12px}
+}
+@media(max-width:400px){
+  body[data-language] .days{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+
+/* Weekly table: strong day dividers, fine time rows, aligned zebra bands. */
+.week .calendar{display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));grid-template-rows:var(--week-header-height,84px) repeat(var(--row-count),minmax(86px,auto));gap:0;padding:34px 3px 3px;overflow:auto;align-items:stretch}
+.week .day-column,.week .event-list{display:contents}
+.week .day-title{grid-column:var(--day-column);grid-row:1;margin:0;height:auto;border:0;border-left:3px solid #26323a;border-top:3px solid #26323a;border-bottom:2px solid #26323a;border-radius:0;box-shadow:none;padding:0 12px;font-size:15px}
+.week .day-title .weekday-sticker{height:var(--sticker-height);right:2px;bottom:12px}
+.week .schedule-cell{grid-column:var(--day-column);min-width:0;border-left:3px solid #26323a;border-bottom:1px solid #d4dbe0;background:#fff}
+.week .schedule-cell[data-stripe="odd"]{background:#f1f4f7}
+.week .day-column:last-child .schedule-cell,.week .day-column:last-child>.day-title{border-right:3px solid #26323a}
+.week .schedule-cell:last-child{border-bottom:3px solid #26323a}
+.week .day-column .event{display:grid;grid-template-columns:24px minmax(0,1fr);align-items:center;min-height:112px;padding:12px 10px 10px;border:0;border-radius:0;box-shadow:none;background:transparent;overflow:visible}
+.week .day-column .event .emoji{width:24px;background:transparent}
+.week .day-column .event .emoji>span{width:24px;height:28px;font-size:23px}
+.week .day-column .event-content{padding:0 0 0 7px;gap:7px;background:transparent}
+.week .day-column .time{display:flex;align-items:center;font-size:21px;letter-spacing:0;white-space:nowrap}
+.week .time::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--strong);margin-right:6px;flex-shrink:0}
+.week .day-column .event-title{font-size:14px;line-height:1.35;color:#4d5c66}
+[data-language="en"] .week .day-column .event-title{font-size:13px}
+body[data-language] .week .calendar{--week-header-height:120px}
+.week .day-column .actions{grid-column:1/-1;width:100%;padding:8px 0 0;border:0;gap:8px;background:transparent;justify-content:space-between}
+.week .adjust{gap:7px}
+.week .day-column .adjust button{width:25px;height:25px;font-size:17px;border-width:2px;box-shadow:1px 1px #26323a}
+.week .day-column .check{width:28px;height:28px;font-size:20px;border-width:2px;border-radius:8px;box-shadow:1px 1px #26323a}
+.week .day-column .check[aria-pressed=true],.week .day-column .adjust button:active,.week .day-column .check:active{box-shadow:none}
+body[data-language] .week .day-title{height:auto;padding:0 8px 10px;font-size:13px;align-items:flex-end}
+body[data-language] .week .day-title .weekday-sticker{bottom:38px;height:var(--sticker-height)}
+
+
+/* Fixed weekday routines recede; Tuesday's English lesson is the one emphasis. */
+.week .day-column .event.fixed-routine .emoji{opacity:.48;filter:saturate(.25)}
+.week .day-column .event.fixed-routine .time{color:#687680}
+.week .day-column .event.fixed-routine .event-title{color:#77828b}
+.week .fixed-routine .time::before{background:#a5afb6}
+.week .day-column .fixed-routine .adjust button,.week .day-column .fixed-routine .check:not([aria-pressed="true"]){color:#6e7b85;border-color:#9da7ae;box-shadow:1px 1px #9da7ae}
+.week .day-column .fixed-routine .adjust button:active{box-shadow:none}
+.day-column .event.highlight-course{background:#fff1aa;border-color:#9f681e}
+.day-column .event.highlight-course .emoji{background:#ffe18b}
+.day-column .event.highlight-course .time{color:#84511d}
+.day-column .event.highlight-course .event-title{color:#713f12;font-weight:850}
+.week .schedule-cell.course-highlight{background:#fff1aa}
+.week .day-column .event.highlight-course,.week .day-column .highlight-course .emoji{background:transparent}
+.week .highlight-course .time::before{width:8px;height:8px;background:#d7840a}
+
+
+/* Day keeps its original colors; all three special lessons fill the whole card. */
+main:not(.week) .day-column .event.special-event{background:#fff1aa;border-color:var(--line)}
+main:not(.week) .day-column .special-event .emoji,
+main:not(.week) .day-column .special-event .event-content,
+main:not(.week) .day-column .special-event .actions{background:transparent}
+main:not(.week) .day-column .special-event .time{color:#84511d}
+main:not(.week) .day-column .special-event .event-title{color:#713f12;font-weight:850}
+/* Weekend page backgrounds, including the header and spaces around the cards. */
+body{--page-bg:#fff}
+body[data-palette="6"]{--page-bg:#e0d4ef}
+body[data-palette="7"]{--page-bg:#f0e2f9}
+body,header,main,.calendar,.day-column{background:var(--page-bg)}
+.week .day-column[data-palette="6"] .schedule-cell{background:#e0d4ef}
+.week .day-column[data-palette="7"] .schedule-cell{background:#f0e2f9}
+.week .day-column[data-theme="weekend"] .schedule-cell[data-stripe="odd"]{background-image:linear-gradient(#ffffff40,#ffffff40)}
+/* Week is read-only; editing and check-ins belong to Day. */
+body[data-view="week"] .adjustment-tools{display:none}
+.week .day-column .event{min-height:86px}
+
+
+/* Center the minute choices independently of the clock and the right switches. */
+header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.clock{justify-self:start}
+.adjustment-tools{position:relative;width:240px;min-height:40px;justify-self:center}
+.adjustment-tools .reset-records{position:absolute;right:calc(100% + 16px);top:0}
+.header-tools{grid-column:3;justify-self:end;width:auto;flex-wrap:nowrap;justify-content:flex-end;gap:14px}
+.header-tools .language-switch{position:static;background:#fff;flex-shrink:0}
+.header-tools .view-switch{flex-shrink:0}
+body[data-view="week"] .view-switch,body[data-view="week"] .view-switch button{background:#fff}
+body[data-view="week"] .view-switch button[aria-pressed="false"]{color:#7b858c;font-weight:650}
+body[data-view="week"] .view-switch button[aria-pressed="true"]{background:#fff;color:var(--ink);font-weight:900}
+/* The same unstriped yellow cell marks each of the three weekly lessons. */
+.week .day-column[data-palette] .schedule-cell.course-highlight[data-stripe]{background:#fff1aa;background-image:none}
+@media(min-width:651px) and (max-width:1000px){
+ .adjustment-tools{width:203px;min-height:37px}
+ .adjustment-tools .reset-records{right:calc(100% + 12px);width:35px;height:37px}
+ .header-tools{gap:10px}
+}
+@media(max-width:760px){
+ header{grid-template-columns:minmax(0,1fr) auto;row-gap:20px}
+ .clock{grid-column:1;grid-row:1}
+ .header-tools{grid-column:2;grid-row:1;flex-direction:column;align-items:flex-end;gap:8px}
+ .adjustment-tools{grid-column:1/-1;grid-row:2;width:184px;min-height:34px}
+ .adjustment-tools .steps{gap:6px}
+ .adjustment-tools .steps button{width:32px;height:34px}
+ .adjustment-tools .reset-records{right:calc(100% + 12px);width:32px;height:34px}
+}
+
+</style></head><body><svg class="sticker-filter-defs" width="0" height="0" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs><filter id="sticker-white-outline" x="-25%" y="-25%" width="150%" height="150%" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feMorphology in="SourceAlpha" operator="dilate" radius="2" result="inner-alpha"/><feFlood flood-color="#fff" result="white"/><feComposite in="white" in2="inner-alpha" operator="in" result="inner-outline"/><feMerge><feMergeNode in="inner-outline"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs></svg><header><div class="clock" aria-label="当前时间"><time id="header-time">00:00</time><div class="clock-meta"><span id="header-date"></span><span id="header-day"></span></div></div><div class="adjustment-tools"><button type="button" class="reset-records" id="reset-records" aria-label="清空全部打卡并恢复默认时间" title="清空记录"><!-- Lucide rotate-cw, ISC License: assets/LUCIDE-LICENSE.txt --><svg aria-hidden="true" class="lucide lucide-rotate-cw"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+  <path d="M21 3v5h-5" />
+</svg></button><div class="steps" aria-label="每次调整的分钟数"><button data-step="1" aria-label="每次调整1分钟" aria-pressed="true">1</button><button data-step="3" aria-label="每次调整3分钟" aria-pressed="false">3</button><button data-step="5" aria-label="每次调整5分钟" aria-pressed="false">5</button><button data-step="7" aria-label="每次调整7分钟" aria-pressed="false">7</button><button data-step="10" aria-label="每次调整10分钟" aria-pressed="false">10</button></div></div><div class="header-tools"><div class="view-switch" aria-label="日历视图"><button data-view="day" aria-pressed="true">一天</button><button data-view="week" aria-pressed="false">一周</button></div><div class="language-switch" aria-label="Language / 语言"><button data-language="zh" aria-pressed="false">中文</button><button data-language="en" aria-pressed="true">English</button></div></div></header><main id="main"><nav class="days" id="days" aria-label="切换星期"></nav><div class="calendar" id="calendar"></div></main><div id="notice" role="status" class="notice"></div><script>
+const DATA={"days":["周一","周二","周三","周四","周五","周六","周日"],"schedules":[[{"id":"d0_wd_0700","time":"07:00","title":"起床 · 吃早餐","emoji":"🌅 🍞","sourceId":"wd_0700","en":"Wake Up & Breakfast","type":"routine"},{"id":"d0_wd_0800","time":"08:20","title":"出门去幼儿园","emoji":"🎒","sourceId":"wd_0800","en":"Go to School","type":"routine"},{"id":"d0_school","time":"09:00","end":"16:50","title":"幼儿园的一天","en":"Kindergarten","emoji":"🏫","type":"school"},{"id":"d0_wd_1630","time":"16:50","title":"放学 · 户外玩耍","emoji":"🎒 🚴🏻","sourceId":"wd_1630","en":"School Out & Play","type":"routine"},{"id":"d0_wd_1700","time":"17:00","title":"自由玩耍","emoji":"🛝","sourceId":"wd_1700","en":"Play Time","type":"routine"},{"id":"d0_wd_1730","time":"17:30","title":"回家啦","emoji":"🏡","sourceId":"wd_1730","en":"Going Home","type":"routine"},{"id":"d0_wd_1800","time":"18:00","title":"晚餐时间","emoji":"🍲","sourceId":"wd_1800","en":"Yummy Dinner","type":"routine"},{"id":"d0_wd_1900","time":"19:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"wd_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d0_wd_2000","time":"20:00","title":"亲子时光","emoji":"🧸 💃🏻","sourceId":"wd_2000","en":"Fun with Mommy","type":"routine"},{"id":"d0_wd_2100","time":"21:00","title":"晚安，好梦","emoji":"🌙","sourceId":"wd_2100","en":"Nighty Night","type":"routine"}],[{"id":"d1_wd_0700","time":"07:00","title":"起床 · 吃早餐","emoji":"🌅 🍞","sourceId":"wd_0700","en":"Wake Up & Breakfast","type":"routine"},{"id":"d1_wd_0800","time":"08:20","title":"出门去幼儿园","emoji":"🎒","sourceId":"wd_0800","en":"Go to School","type":"routine"},{"id":"d1_school","time":"09:00","end":"16:50","title":"幼儿园的一天","en":"Kindergarten","emoji":"🏫","type":"school"},{"id":"d1_wd_1630","time":"16:50","title":"放学 · 户外玩耍","emoji":"🎒 🚴🏻","sourceId":"wd_1630","en":"School Out & Play","type":"routine"},{"id":"d1_wd_1700","time":"17:00","title":"自由玩耍","emoji":"🛝","sourceId":"wd_1700","en":"Play Time","type":"routine"},{"id":"d1_wd_1730","time":"17:30","title":"回家啦","emoji":"🏡","sourceId":"wd_1730","en":"Going Home","type":"routine"},{"id":"d1_wd_1800","time":"18:00","title":"晚餐时间","emoji":"🍲","sourceId":"wd_1800","en":"Yummy Dinner","type":"routine"},{"id":"d1_class","time":"19:00","end":"20:00","title":"英语课","en":"English class","emoji":"📚","type":"course"},{"id":"d1_wd_1900","time":"20:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"wd_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d1_wd_2000","time":"20:30","title":"家庭玩耍","emoji":"🧸 💃🏻","sourceId":"wd_2000","en":"Family Playtime","type":"routine"},{"id":"d1_wd_2100","time":"21:00","title":"晚安，好梦","emoji":"🌙","sourceId":"wd_2100","en":"Nighty Night","type":"routine"}],[{"id":"d2_wd_0700","time":"07:00","title":"起床 · 吃早餐","emoji":"🌅 🍞","sourceId":"wd_0700","en":"Wake Up & Breakfast","type":"routine"},{"id":"d2_wd_0800","time":"08:20","title":"出门去幼儿园","emoji":"🎒","sourceId":"wd_0800","en":"Go to School","type":"routine"},{"id":"d2_school","time":"09:00","end":"16:50","title":"幼儿园的一天","en":"Kindergarten","emoji":"🏫","type":"school"},{"id":"d2_wd_1630","time":"16:50","title":"放学 · 户外玩耍","emoji":"🎒 🚴🏻","sourceId":"wd_1630","en":"School Out & Play","type":"routine"},{"id":"d2_wd_1700","time":"17:00","title":"自由玩耍","emoji":"🛝","sourceId":"wd_1700","en":"Play Time","type":"routine"},{"id":"d2_wd_1730","time":"17:30","title":"回家啦","emoji":"🏡","sourceId":"wd_1730","en":"Going Home","type":"routine"},{"id":"d2_wd_1800","time":"18:00","title":"晚餐时间","emoji":"🍲","sourceId":"wd_1800","en":"Yummy Dinner","type":"routine"},{"id":"d2_wd_1900","time":"19:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"wd_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d2_wd_2000","time":"20:00","title":"亲子时光","emoji":"🧸 💃🏻","sourceId":"wd_2000","en":"Fun with Mommy","type":"routine"},{"id":"d2_wd_2100","time":"21:00","title":"晚安，好梦","emoji":"🌙","sourceId":"wd_2100","en":"Nighty Night","type":"routine"}],[{"id":"d3_wd_0700","time":"07:00","title":"起床 · 吃早餐","emoji":"🌅 🍞","sourceId":"wd_0700","en":"Wake Up & Breakfast","type":"routine"},{"id":"d3_wd_0800","time":"08:20","title":"出门去幼儿园","emoji":"🎒","sourceId":"wd_0800","en":"Go to School","type":"routine"},{"id":"d3_school","time":"09:00","end":"16:50","title":"幼儿园的一天","en":"Kindergarten","emoji":"🏫","type":"school"},{"id":"d3_wd_1630","time":"16:50","title":"放学 · 户外玩耍","emoji":"🎒 🚴🏻","sourceId":"wd_1630","en":"School Out & Play","type":"routine"},{"id":"d3_wd_1700","time":"17:00","title":"自由玩耍","emoji":"🛝","sourceId":"wd_1700","en":"Play Time","type":"routine"},{"id":"d3_wd_1730","time":"17:30","title":"回家啦","emoji":"🏡","sourceId":"wd_1730","en":"Going Home","type":"routine"},{"id":"d3_wd_1800","time":"18:00","title":"晚餐时间","emoji":"🍲","sourceId":"wd_1800","en":"Yummy Dinner","type":"routine"},{"id":"d3_wd_1900","time":"19:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"wd_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d3_wd_2000","time":"20:00","title":"亲子时光","emoji":"🧸 💃🏻","sourceId":"wd_2000","en":"Fun with Mommy","type":"routine"},{"id":"d3_wd_2100","time":"21:00","title":"晚安，好梦","emoji":"🌙","sourceId":"wd_2100","en":"Nighty Night","type":"routine"}],[{"id":"d4_wd_0700","time":"07:00","title":"起床 · 吃早餐","emoji":"🌅 🍞","sourceId":"wd_0700","en":"Wake Up & Breakfast","type":"routine"},{"id":"d4_wd_0800","time":"08:20","title":"出门去幼儿园","emoji":"🎒","sourceId":"wd_0800","en":"Go to School","type":"routine"},{"id":"d4_school","time":"09:00","end":"16:50","title":"幼儿园的一天","en":"Kindergarten","emoji":"🏫","type":"school"},{"id":"d4_wd_1630","time":"16:50","title":"放学 · 户外玩耍","emoji":"🎒 🚴🏻","sourceId":"wd_1630","en":"School Out & Play","type":"routine"},{"id":"d4_wd_1700","time":"17:00","title":"自由玩耍","emoji":"🛝","sourceId":"wd_1700","en":"Play Time","type":"routine"},{"id":"d4_wd_1730","time":"17:30","title":"回家啦","emoji":"🏡","sourceId":"wd_1730","en":"Going Home","type":"routine"},{"id":"d4_wd_1800","time":"18:00","title":"晚餐时间","emoji":"🍲","sourceId":"wd_1800","en":"Yummy Dinner","type":"routine"},{"id":"d4_wd_1900","time":"19:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"wd_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d4_wd_2000","time":"20:00","title":"亲子时光","emoji":"🧸 💃🏻","sourceId":"wd_2000","en":"Fun with Mommy","type":"routine"},{"id":"d4_wd_2100","time":"21:00","title":"晚安，好梦","emoji":"🌙","sourceId":"wd_2100","en":"Nighty Night","type":"routine"}],[{"id":"d5_we_0700","time":"07:00","title":"起床啦","emoji":"🌞","sourceId":"we_0700","en":"Wake Up!","type":"routine"},{"id":"d5_we_0800","time":"08:00","title":"早餐时间","emoji":"🥛","sourceId":"we_0800","en":"Breakfast","type":"routine"},{"id":"d5_we_0900","time":"09:00","title":"自由玩耍","emoji":"🎢","sourceId":"we_0900","en":"Play Time","type":"routine"},{"id":"d5_we_1000","time":"10:00","title":"自由玩耍","emoji":"🎈","sourceId":"we_1000","en":"Play Time","type":"routine"},{"id":"d5_we_1100","time":"11:00","title":"午餐时间","emoji":"🥗","sourceId":"we_1100","en":"Lunch","type":"routine"},{"id":"d5_we_1200","time":"12:00","title":"动画 · 玩耍","emoji":"📺","sourceId":"we_1200","en":"TV & Play","type":"routine"},{"id":"d5_we_1300","time":"13:00","title":"午睡时间","emoji":"😴","sourceId":"we_1300","en":"Nap Time","type":"routine"},{"id":"d5_we_1400","time":"14:00","title":"午睡时间","emoji":"💤","sourceId":"we_1400","en":"Nap Time","type":"routine"},{"id":"d5_we_1500","time":"15:00","title":"下午茶","emoji":"🍰","sourceId":"we_1500","en":"Tea Time","type":"routine"},{"id":"d5_we_1600","time":"16:00","title":"户外玩耍","emoji":"🌳","sourceId":"we_1600","en":"Outdoor Play","type":"routine"},{"id":"d5_class","time":"16:50","end":"18:00","title":"舞蹈课","en":"Dance class","emoji":"💃🏻","type":"dance"},{"id":"d5_we_1800","time":"18:00","title":"晚餐时间","emoji":"🥘","sourceId":"we_1800","en":"Dinner Time","type":"routine"},{"id":"d5_we_1900","time":"19:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"we_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d5_we_2000","time":"20:00","title":"亲子时光","emoji":"🧸 💃🏻","sourceId":"we_2000","en":"Fun with Mommy","type":"routine"},{"id":"d5_we_2100","time":"21:00","title":"晚安，好梦","emoji":"🌃","sourceId":"we_2100","en":"Sleepy Time","type":"routine"}],[{"id":"d6_we_0700","time":"07:00","title":"起床啦","emoji":"🌞","sourceId":"we_0700","en":"Wake Up!","type":"routine"},{"id":"d6_we_0800","time":"08:00","title":"早餐时间","emoji":"🥛","sourceId":"we_0800","en":"Breakfast","type":"routine"},{"id":"d6_we_0900","time":"09:00","title":"自由玩耍","emoji":"🎢","sourceId":"we_0900","en":"Play Time","type":"routine"},{"id":"d6_we_1000","time":"10:00","title":"自由玩耍","emoji":"🎈","sourceId":"we_1000","en":"Play Time","type":"routine"},{"id":"d6_we_1100","time":"11:00","title":"午餐时间","emoji":"🥗","sourceId":"we_1100","en":"Lunch","type":"routine"},{"id":"d6_we_1200","time":"12:00","title":"动画 · 玩耍","emoji":"📺","sourceId":"we_1200","en":"TV & Play","type":"routine"},{"id":"d6_we_1300","time":"13:00","title":"午睡时间","emoji":"😴","sourceId":"we_1300","en":"Nap Time","type":"routine"},{"id":"d6_we_1400","time":"14:00","title":"午睡时间","emoji":"💤","sourceId":"we_1400","en":"Nap Time","type":"routine"},{"id":"d6_we_1500","time":"15:00","title":"下午茶","emoji":"🍰","sourceId":"we_1500","en":"Tea Time","type":"routine"},{"id":"d6_we_1600","time":"16:00","title":"户外玩耍","emoji":"🌳","sourceId":"we_1600","en":"Outdoor Play","type":"routine"},{"id":"d6_class","time":"17:00","end":"18:00","title":"英语课","en":"English class","emoji":"📚","type":"course"},{"id":"d6_we_1800","time":"18:00","title":"晚餐时间","emoji":"🥘","sourceId":"we_1800","en":"Dinner Time","type":"routine"},{"id":"d6_we_1900","time":"19:00","title":"洗澡 · 洗漱","emoji":"🛀","sourceId":"we_1900","en":"Bath & Wash Up","type":"routine"},{"id":"d6_we_2000","time":"20:00","title":"亲子时光","emoji":"🧸 💃🏻","sourceId":"we_2000","en":"Fun with Mommy","type":"routine"},{"id":"d6_we_2100","time":"21:00","title":"晚安，好梦","emoji":"🌃","sourceId":"we_2100","en":"Sleepy Time","type":"routine"}]],"school":[{"id":"wd_0900","time":"09:00","title":"阅读时间","emoji":"📚 🍌"},{"id":"wd_1000","time":"10:00","title":"画画时间","emoji":"🎨"},{"id":"wd_1100","time":"11:00","title":"午餐时间","emoji":"🍱"},{"id":"wd_1200","time":"12:00","title":"午睡时间","emoji":"😴"},{"id":"wd_1300","time":"13:00","title":"午睡时间","emoji":"💤"},{"id":"wd_1400","time":"14:00","title":"自由玩耍","emoji":"⛹️‍♀️"},{"id":"wd_1500","time":"15:00","title":"下午茶","emoji":"🍰"},{"id":"wd_1600","time":"16:00","title":"自由玩耍","emoji":"🚽"}]};
+let selectedDay=0,view='day',step=1,language='en';
+const EN_DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const EN_NAMES={'起床 · 早餐':'Wake Up & Breakfast','去幼儿园':'Go to Kindergarten','阅读':'Reading','画画':'Drawing','午餐':'Lunch','午睡':'Nap','玩耍':'Play','放学':"School’s Out",'放学 · 玩耍':"School’s Out & Play",'回家':'Home','晚餐':'Dinner','洗澡':'Bath','睡觉':'Bedtime','起床':'Wake Up','早餐':'Breakfast','亲子时光':'Family Time','家庭玩耍':'Family Playtime','下午茶':'Snack','英语课':'English Class','舞蹈课':'Dance Class','户外玩耍':'Outdoor Play','动画 · 玩耍':'TV & Play'};
+const dayLabel=i=>language==='en'?EN_DAYS[i]:DATA.days[i];
+const DAY_STICKERS=[['1ebp.webp',200,226],['2v.webp',450,700],['3ee.webp',490,509],['4v.webp',252,460],['5ei.webp',250,267],['6ee.webp',500,500],['7ei.webp',216,431]];
+function weekdayHeading(day){const [file,width,height]=DAY_STICKERS[day];return `<span class="weekday-label">${dayLabel(day)}</span><img class="weekday-sticker" src="./assets/numberblocks/${file}" width="${width}" height="${height}" alt="" aria-hidden="true" draggable="false">`;}
+const eventLabel=e=>language==='en'?(EN_NAMES[e.title]||e.en||e.title):e.title;
+function updateClock(){const now=new Date(),day=(now.getDay()+6)%7;document.getElementById('header-time').textContent=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');document.getElementById('header-date').textContent=language==='en'?now.toLocaleDateString('en-US',{month:'long',day:'numeric'}):`${now.getMonth()+1}月${now.getDate()}日`;const badge=document.getElementById('header-day');badge.textContent=dayLabel(day);badge.dataset.todayTheme=day>=5?'weekend':'weekday';badge.dataset.palette=String(day+1);}
+const WEEK_ORDER=[0,1,2,3,4,5,6];
+const m=t=>Number(t.slice(0,2))*60+Number(t.slice(3)),t=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;
+const DEFAULT_SCHEDULES=structuredClone(DATA.schedules);
+const schoolOverrides={},completed={};
+const STORAGE_KEY='routine_age4_5_v1';
+function weekKey(){const date=new Date();date.setDate(date.getDate()-(date.getDay()+6)%7);return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;}
+let recordWeek=weekKey();
+function saveRecords(){try{const times=Object.fromEntries(WEEK_ORDER.flatMap(day=>events(day)).map(e=>[e.id,e.time]));localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,week:recordWeek,times,completed:Object.keys(completed).filter(id=>completed[id])}));}catch{const notice=document.getElementById('notice');notice.textContent=language==='en'?'Could not save records on this device':'当前设备未能保存记录';clearTimeout(move.timer);move.timer=setTimeout(()=>notice.textContent='',2500);}}
+function loadRecords(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if(saved?.version!==1)return;
+  const validTime=value=>typeof value==='string'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+  const knownIds=new Set(WEEK_ORDER.flatMap(day=>events(day)).map(e=>e.id));
+  for(const day of DATA.schedules)for(const event of day){const time=saved.times?.[event.id];if(validTime(time))event.time=time;}
+  for(let day=0;day<5;day++)DATA.school.forEach((event,i)=>{const id=`d${day}_school_${i}`,time=saved.times?.[id];if(validTime(time))schoolOverrides[id]={time};});
+  if(saved.week===recordWeek&&Array.isArray(saved.completed))for(const id of saved.completed)if(knownIds.has(id))completed[id]=true;
+ }catch{/* Invalid or unavailable storage falls back to the approved default routine. */}
+}
+function resetRecords(){DATA.schedules=structuredClone(DEFAULT_SCHEDULES);for(const key of Object.keys(schoolOverrides))delete schoolOverrides[key];for(const key of Object.keys(completed))delete completed[key];saveRecords();render();const notice=document.getElementById('notice');clearTimeout(move.timer);notice.textContent=language==='en'?'Records cleared':'已清空记录';move.timer=setTimeout(()=>notice.textContent='',2000);document.getElementById('reset-records').focus();}
+const names={'起床 · 吃早餐':'起床 · 早餐','出门去幼儿园':'去幼儿园','幼儿园的一天':'幼儿园','阅读时间':'阅读','画画时间':'画画','午餐时间':'午餐','午睡时间':'午睡','自由玩耍':'玩耍','放学 · 户外玩耍':'放学 · 玩耍','回家啦':'回家','晚餐时间':'晚餐','洗澡 · 洗漱':'洗澡','晚安，好梦':'睡觉','起床啦':'起床','早餐时间':'早餐'};
+function events(day){let items=structuredClone(DATA.schedules[day]);if(day<5){items=items.filter(e=>e.type!=='school');items.push(...DATA.school.map((e,i)=>({...e,id:`d${day}_school_${i}`,type:'school',...schoolOverrides[`d${day}_school_${i}`]})));}return items.map(e=>({...e,title:names[e.title]||e.title})).sort((a,b)=>m(a.time)-m(b.time));}
+function icon(e){return e.emoji?.split(' ')[0] || ({'起床 · 早餐':'🌅','去幼儿园':'🎒','阅读':'📚','画画':'🎨','午餐':'🍱','午睡':'😴','玩耍':'🛝','放学':'🎒','回家':'🏡','晚餐':'🍲','洗澡':'🛁','睡觉':'🌙','起床':'🌞','早餐':'🥛','亲子时光':'🧸','家庭玩耍':'🧸','下午茶':'🍰','英语课':'📚','舞蹈课':'💃🏻','户外玩耍':'🌳','动画 · 玩耍':'📺'})[e.title]||e.emoji||'⭐';}
+function eventCard(e,day){return `<article class="event ${['course','dance'].includes(e.type)?'special-event':''} ${completed[e.id]?'done':''} ${day<5?(day===1&&e.type==='course'?'highlight-course':'fixed-routine'):''}" data-id="${e.id}"><div class="emoji" aria-hidden="true"><span>${icon(e)}</span></div><div class="event-content"><time class="time">${e.time}</time><span class="event-title">${eventLabel(e)}</span></div>${view==='day'?`<div class="actions"><div class="adjust"><button data-move="-1" data-event="${e.id}" data-eventday="${day}" aria-label="${language==='en'?`${dayLabel(day)} ${eventLabel(e)}, ${step} minutes earlier`:`${DATA.days[day]}${e.title}提前${step}分钟`}">−</button><button data-move="1" data-event="${e.id}" data-eventday="${day}" aria-label="${language==='en'?`${dayLabel(day)} ${eventLabel(e)}, ${step} minutes later`:`${DATA.days[day]}${e.title}推迟${step}分钟`}">＋</button></div><button class="check" data-check="${e.id}" aria-label="${language==='en'?`${dayLabel(day)} ${eventLabel(e)}, completed`:`${DATA.days[day]}${e.title}已完成`}" aria-pressed="${!!completed[e.id]}">${completed[e.id]?'✓':''}</button></div>`:''}</article>`;}
 function render(){
- document.querySelectorAll('.course-strip [data-open]').forEach(button=>{const e=findEvent(button.dataset.open);button.querySelector('span').textContent=timeRange(e);});
- document.getElementById('day-tabs').innerHTML=DAYS.map((d,i)=>`<button data-day="${i}" aria-pressed="${i===selectedDay}" aria-label="${d}">${d}</button>`).join('');
- document.getElementById('calendar').innerHTML=schedules.map((events,day)=>{const sorted=[...events].sort((a,b)=>minutes(a.time)-minutes(b.time));return `<section class="day ${day>=5?'weekend':''} ${day===selectedDay?'selected':''} ${day===(new Date().getDay()+6)%7?'today':''}" aria-label="${DAYS[day]}"><div class="day-header"><span class="day-name">${DAYS[day]}${day===(new Date().getDay()+6)%7?'<small class="today-label">今天</small>':''}</span><span class="day-en">${EN_DAYS[day]}</span></div><div class="event-list">${sorted.map((e,i)=>`<article class="event ${e.type} ${done[e.id]?'done':''} ${isCurrent(e,day,sorted,i)?'current':''}" data-id="${e.id}"><button class="event-open" data-open="${e.id}" aria-label="${DAYS[day]} ${timeRange(e)} ${e.title}，查看详情"><span class="event-icon" aria-hidden="true">${e.emoji}</span><time class="event-time">${timeRange(e)}</time><span class="event-title">${e.title}</span><span class="event-en">${e.en}</span></button><div class="event-bottom"><span class="detail-hint">${e.type==='school'?'校内活动 ↗':'详情 / 调时间 ↗'}</span><button class="check" data-check="${e.id}" aria-label="${DAYS[day]} ${e.title}已完成" aria-pressed="${!!done[e.id]}">${done[e.id]?'✓':''}</button></div></article>`).join('')}</div></section>`;}).join('');
+ const reset=document.getElementById('reset-records');
+ reset.setAttribute('aria-label',language==='en'?'Clear all check-ins and reset times':'清空全部打卡并恢复默认时间');
+ reset.title=language==='en'?'Reset records':'清空记录';
+ document.body.dataset.palette=String(selectedDay+1);
+ document.documentElement.lang=language==='en'?'en':'zh-CN';
+ document.body.dataset.language=language;
+ document.body.dataset.view=view;
+ document.title=language==='en'?'4½-Year-Old Daily Routine Calendar':'4岁半的生活打卡日历';
+ document.querySelector('.clock').setAttribute('aria-label',language==='en'?'Current time':'当前时间');
+ document.querySelector('.view-switch').setAttribute('aria-label',language==='en'?'Calendar view':'日历视图');
+ document.querySelector('.steps').setAttribute('aria-label',language==='en'?'Minutes per adjustment':'每次调整的分钟数');
+ document.getElementById('days').setAttribute('aria-label',language==='en'?'Choose a weekday':'切换星期');
+ document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-label',language==='en'?`Adjust by ${b.dataset.step} minutes`:`每次调整${b.dataset.step}分钟`));
+ document.querySelectorAll('button[data-language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.language===language)));
+ document.querySelector('button[data-view="day"]').textContent=language==='en'?'Day':'一天';
+ document.querySelector('button[data-view="week"]').textContent=language==='en'?'Week':'一周';
+ updateClock();
+ document.body.dataset.theme=selectedDay>=5?'weekend':'weekday';
+ document.getElementById('main').className=view==='week'?'week':'';
+ document.querySelectorAll('button[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));
+ document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.step)===step)));
+ document.getElementById('days').innerHTML=WEEK_ORDER.map(i=>`<button data-day="${i}" data-palette="${i+1}" class="${i>=5?'weekend':'weekday'}" aria-pressed="${i===selectedDay}">${weekdayHeading(i)}</button>`).join('');
+ const indices=view==='day'?[selectedDay]:WEEK_ORDER;
+ const dailyEvents=indices.map(day=>events(day));
+ const times=view==='week'?[...new Set(dailyEvents.flat().map(e=>e.time))].sort((a,b)=>m(a)-m(b)):[];
+ const calendar=document.getElementById('calendar');
+ calendar.style.setProperty('--row-count',String(times.length||1));
+ calendar.innerHTML=indices.map((day,column)=>{
+  const list=dailyEvents[column];
+  const content=view==='week'?times.map((time,row)=>{
+   const matching=list.filter(e=>e.time===time);
+   return `<div class="schedule-cell ${matching.some(e=>['course','dance'].includes(e.type))?'course-highlight':''}" data-time="${time}" data-stripe="${row%2?'odd':'even'}" style="grid-row:${row+2}" ${matching.length?'':'aria-hidden="true"'}>${matching.map(e=>eventCard(e,day)).join('')}</div>`;
+  }).join(''):list.map(e=>eventCard(e,day)).join('');
+  return `<section class="day-column" data-palette="${day+1}" data-theme="${day>=5?'weekend':'weekday'}" style="--day-column:${column+1}" aria-label="${dayLabel(day)}"><h2 class="day-title">${weekdayHeading(day)}</h2><div class="event-list">${content}</div></section>`;
+ }).join('');
 }
-function findEvent(id){return schedules.flat().find(e=>e.id===id);}
-function toggleTask(id){done[id]=!done[id];save();playTickSound();render();if(openedId===id)renderDialog();}
-function adjustTime(id,direction){const e=findEvent(id),delta=direction*currentStep;const start=minutes(e.time)+delta,end=e.end?minutes(e.end)+delta:null;if(start<0||start>=1440||(end!==null&&end>=1440)){notify('时间需要保持在同一天内。');return;}e.time=clock(start);if(end!==null)e.end=clock(end);save();playTickSound();render();renderDialog();}
-function getConversation(e){return CONVERSATIONS[e.sourceId]||(e.type==='school'?{mom:"Have a lovely day at school!",kid:"I will learn and play with my friends!"}:e.type==='dance'?{mom:"Time to dance! Let's move to the music.",kid:"Watch me twirl!"}:{mom:"Let's have fun learning English!",kid:"I'm ready! Let's learn together!"});}
-function renderDialog(){const e=findEvent(openedId);if(!e)return;const day=Number(e.id[1]),conv=getConversation(e);const school=INITIAL_WEEKDAY.filter(x=>minutes(x.time)>=540&&minutes(x.time)<990);
- document.getElementById('event-content').innerHTML=`<div class="dialog-head"><div><span class="eyebrow">${DAYS[day]} · ${e.en}</span><h2 id="event-heading">${e.emoji} ${e.title}</h2></div><button class="close" data-close aria-label="关闭详情">×</button></div><div class="dialog-body"><div class="adjuster"><button class="round" data-adjust="-1" aria-label="提前 ${currentStep} 分钟">−</button><strong>${timeRange(e)}</strong><button class="round" data-adjust="1" aria-label="推迟 ${currentStep} 分钟">＋</button></div><p class="dialog-note">每次调整 ${currentStep} 分钟${e.end?' · 开始与结束时间一起移动，保持时长':''}</p>${e.type==='school'?`<section class="school-detail"><h3>在幼儿园做些什么？</h3>${school.map(x=>`<div class="school-row"><time>${x.time}</time><span>${x.emoji} ${CN[x.title]}</span></div>`).join('')}<p class="dialog-note" style="margin-top:10px">校内活动沿用原作息，仅作参考；放学时间以卡片为准。</p></section>`:''}<div class="phrase"><button class="speak" data-speak="mom" aria-label="播放家长英语对话">👩 🔊</button><p>${conv.mom}</p></div><div class="phrase"><button class="speak" data-speak="kid" aria-label="播放孩子英语对话">👧🏻 🔊</button><p>${conv.kid}</p></div><button class="full-btn" data-dialog-check>${done[e.id]?'✓ 已完成 · 点击取消':'□ 标记为已完成'}</button></div>`;
-}
-function openEvent(id){openedId=id;selectedDay=Number(id[1]);render();renderDialog();document.getElementById('event-dialog').showModal();}
-function closeEvent(){document.getElementById('event-dialog').close();}
-document.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.step)setStep(Number(b.dataset.step));else if(b.dataset.day){selectedDay=Number(b.dataset.day);render();document.querySelector(`[data-day="${selectedDay}"]`)?.focus();}else if(b.dataset.open)openEvent(b.dataset.open);else if(b.dataset.check){const id=b.dataset.check;toggleTask(id);document.querySelector(`[data-check="${id}"]`)?.focus();}else if(b.hasAttribute('data-close'))closeEvent();else if(b.dataset.adjust){const direction=b.dataset.adjust;adjustTime(openedId,Number(direction));document.querySelector(`[data-adjust="${direction}"]`)?.focus();}else if(b.hasAttribute('data-dialog-check')){toggleTask(openedId);document.querySelector('[data-dialog-check]')?.focus();}else if(b.dataset.speak){const e=findEvent(openedId);speak(getConversation(e)[b.dataset.speak],b.dataset.speak);}else if(b.id==='reset')document.getElementById('reset-dialog').showModal();else if(b.id==='cancel-reset')document.getElementById('reset-dialog').close();else if(b.id==='confirm-reset'){schedules=defaults();done={};save();render();document.getElementById('reset-dialog').close();notify('已恢复七天的默认作息。');}});
-document.getElementById('event-dialog').addEventListener('close',()=>{const id=openedId;openedId=null;if(window.speechSynthesis)speechSynthesis.cancel();document.querySelector(`[data-open="${id}"]`)?.focus();});
-load();render();if('speechSynthesis' in window){voices=speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',()=>voices=speechSynthesis.getVoices());}
-setInterval(()=>{if(savedWeek!==weekKey()){savedWeek=weekKey();done={};save();}if(!document.querySelector('dialog[open]')&&!document.querySelector('button:focus'))render();},60000);
+function move(id,day,dir){const e=events(day).find(e=>e.id===id),time=m(e.time)+dir*step;if(time<0||time>=1440){const note=document.getElementById('notice');note.textContent=language==='en'?'Keep the time within this day':'时间需在同一天内';clearTimeout(move.timer);move.timer=setTimeout(()=>note.textContent='',2000);return;}const original=DATA.schedules[day].find(x=>x.id===id);if(original)original.time=t(time);else schoolOverrides[id]={time:t(time)};saveRecords();render();document.querySelector(`[data-event="${id}"][data-move="${dir}"]`)?.focus();}
+document.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const x=b.dataset;if(b.id==='reset-records'){resetRecords();}else if(x.language){language=x.language;render();document.querySelector(`[data-day="${selectedDay}"]`)?.scrollIntoView({block:'nearest',inline:'nearest'});}else if(x.view){view=x.view;render();}else if(x.day!==undefined){selectedDay=Number(x.day);render();document.querySelector(`[data-day="${selectedDay}"]`)?.focus();}else if(x.step){step=Number(x.step);render();document.querySelector(`[data-step="${step}"]`)?.focus();}else if(x.move)move(x.event,Number(x.eventday),Number(x.move));else if(x.check){completed[x.check]=!completed[x.check];saveRecords();render();document.querySelector(`[data-check="${x.check}"]`)?.focus();}});loadRecords();render();
 
-</script>
-</body>
-</html>
+document.addEventListener("keydown",e=>{if(e.key==="Tab")document.body.dataset.input="keyboard";});
+document.addEventListener("pointerdown",()=>{document.body.dataset.input="pointer";});
+
+updateClock();setInterval(()=>{updateClock();if(recordWeek!==weekKey()){recordWeek=weekKey();for(const id of Object.keys(completed))delete completed[id];saveRecords();render();}},1000);
+
+</script></body></html>
